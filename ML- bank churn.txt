@@ -1,0 +1,51 @@
+ML- bank churn
+
+# Step 1: Import libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+
+# Step 2: Load dataset
+df = pd.read_csv("Churn_Modelling.csv")
+
+print(df.head())
+print(df.shape)
+
+
+# Step 3: Preprocess data
+X = df.drop(['RowNumber', 'CustomerId', 'Surname', 'Exited'], axis=1)
+
+y = df['Exited']
+
+X = pd.get_dummies(X, drop_first=True)
+
+
+# Step 4: Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+
+# Step 5: Scale data
+sc = StandardScaler()
+
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+
+# Step 6: Build Neural Network
+model = MLPClassifier(hidden_layer_sizes=(10,), max_iter=500, random_state=42)
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+
+# Step 7: Evaluate model
+print("Accuracy:", accuracy_score(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))

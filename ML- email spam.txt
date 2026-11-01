@@ -1,0 +1,56 @@
+ML- email spam
+
+# Step 1: Import libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+
+# Step 2: Load dataset
+df = pd.read_csv("emails.csv", encoding='latin-1')
+
+print(df.head())
+print(df.shape)
+
+
+# Step 3: Preprocess data
+X = df.drop(['Email No.', 'Prediction'], axis=1)
+
+y = df['Prediction']
+
+
+# Step 4: Split dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+
+# Step 5: KNN Classification
+knn = KNeighborsClassifier(n_neighbors=5)
+
+knn.fit(X_train, y_train)
+
+y_pred = knn.predict(X_test)
+
+print("KNN Accuracy:", accuracy_score(y_test, y_pred))
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+
+# Step 6: SVM Classification
+svm = SVC()
+
+svm.fit(X_train, y_train)
+
+y_pred = svm.predict(X_test)
+
+print("SVM Accuracy:", accuracy_score(y_test, y_pred))
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+
+# Step 7: Compare performance
+print("KNN Score:", knn.score(X_test, y_test))
+print("SVM Score:", svm.score(X_test, y_test))
