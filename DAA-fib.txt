@@ -1,0 +1,48 @@
+DAA-fib
+
+import time
+
+def fib_recursive(n):
+    if n <= 1:
+        return n
+    return fib_recursive(n - 1) + fib_recursive(n - 2)
+
+
+def fib_iterative(n):
+    a, b = 0, 1
+    print("Iterative Fibonacci:", end=" ")
+
+    for i in range(n):
+        print(a, end=" ")
+        a, b = b, a + b
+
+
+def main():
+    n = int(input("Enter number of terms: "))
+
+    if n < 0:
+        print("Please enter a non-negative number.")
+        return
+
+    start = time.time()
+    print("Recursive Fibonacci:", end=" ")
+    for i in range(n):
+        print(fib_recursive(i), end=" ")
+
+    end = time.time()
+    print("\nRecursive Time:", end - start, "seconds")
+
+    start = time.time()
+    fib_iterative(n)
+    end = time.time()
+    print("\nIterative Time:", end - start, "seconds")
+
+    print("\nRecursive Time Complexity: O(2^n)")
+    print("Recursive Space Complexity: O(n)")
+
+    print("Iterative Time Complexity: O(n)")
+    print("Iterative Space Complexity: O(1)")
+
+
+if __name__ == "__main__":
+    main()
