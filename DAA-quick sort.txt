@@ -1,0 +1,55 @@
+DAA-quick sort
+
+import random
+import time
+
+# Deterministic Quick Sort
+def deterministic(arr):
+    if len(arr) <= 1:
+        return arr
+
+    pivot = arr[-1]
+
+    left = [x for x in arr[:-1] if x <= pivot]
+    right = [x for x in arr[:-1] if x > pivot]
+
+    return deterministic(left) + [pivot] + deterministic(right)
+
+
+# Randomized Quick Sort
+def randomized(arr):
+    if len(arr) <= 1:
+        return arr
+
+    pivot = random.choice(arr)
+
+    left = [x for x in arr if x < pivot]
+    right = [x for x in arr if x > pivot]
+    equal = [x for x in arr if x == pivot]
+
+    return randomized(left) + equal + randomized(right)
+
+
+# Main Program
+arr = list(map(int, input("Enter numbers: ").split()))
+
+# Deterministic Quick Sort
+start = time.time()
+result1 = deterministic(arr)
+end = time.time()
+
+print("\nDeterministic Quick Sort:", result1)
+print("Time Taken:", end - start, "seconds")
+print("Time Complexity: Average O(n log n), Worst O(n^2)")
+print("Space Complexity: Expected O(n), Worst O(n^2)")
+
+
+# Randomized Quick Sort
+start = time.time()
+result2 = randomized(arr)
+end = time.time()
+
+print("\nRandomized Quick Sort:", result2)
+print("Time Taken:", end - start, "seconds")
+print("Time Complexity: Expected O(n log n), Worst O(n^2)")
+print("Space Complexity: Expected O(n), Worst O(n^2)")

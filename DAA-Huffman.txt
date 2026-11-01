@@ -1,0 +1,46 @@
+DAA-Huffman
+
+import heapq
+from collections import Counter
+
+def huffman(text):
+    freq = Counter(text)
+    heap = []
+    count = 0
+
+    for ch, f in freq.items():
+        heapq.heappush(heap, (f, count, ch))
+        count += 1
+
+    while len(heap) > 1:
+        f1, _, left = heapq.heappop(heap)
+        f2, _, right = heapq.heappop(heap)
+
+        node = (left, right)
+        heapq.heappush(heap, (f1 + f2, count, node))
+        count += 1
+
+    codes = {}
+
+    def generate(node, code):
+        if isinstance(node, str):
+            codes[node] = code if code else "0"
+            return
+
+        left, right = node
+        generate(left, code + "0")
+        generate(right, code + "1")
+
+    if heap:
+        generate(heap[0][2], "")
+
+    print("\nCharacter  Frequency  Huffman Code")
+    for ch, f in sorted(freq.items()):
+        print(f"{ch:^9}  {f:^9}  {codes[ch]}")
+
+    encoded = ''.join(codes[ch] for ch in text)
+    print("\nEncoded Message:", encoded)
+    print("Total Bits:", len(encoded))
+
+text = input("Enter the message: ")
+huffman(text)

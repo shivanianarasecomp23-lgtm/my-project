@@ -1,0 +1,68 @@
+DAA-n queens
+
+import time
+
+def is_safe(board, row, col, n):
+
+    for i in range(row):
+        if board[i][col] == 1:
+            return False
+
+    for i in range(row):
+        for j in range(n):
+            if board[i][j] == 1:
+                if abs(i - row) == abs(j - col):
+                    return False
+
+    return True
+
+
+def solve(board, row, n):
+
+    if row == n:
+        return True
+
+    for col in range(n):
+
+        if is_safe(board, row, col, n):
+
+            board[row][col] = 1
+
+            if solve(board, row + 1, n):
+                return True
+
+            board[row][col] = 0
+
+    return False
+
+
+# Main Program
+n = int(input("Enter number of Queens: "))
+col = int(input("Enter column for first Queen (1 to n): "))
+
+if n <= 0 or col < 1 or col > n:
+    print("Invalid input!")
+
+else:
+    board = [[0] * n for i in range(n)]
+
+    # Place the first queen
+    board[0][col - 1] = 1
+
+    start = time.time()
+
+    if solve(board, 1, n):
+
+        print("\nN-Queens Solution:")
+
+        for row in board:
+            print(row)
+
+    else:
+        print("No solution exists!")
+
+    end = time.time()
+
+    print("\nTime Taken:", end - start, "seconds")
+    print("Time Complexity: O(n! * n)")
+    print("Space Complexity: O(n^2) + O(n) recursion stack")
